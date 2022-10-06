@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using _Project._Scripts.Extension;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,15 +10,24 @@ namespace _Project._Scripts
     {
         [SerializeField] private Transform _pointWhereMove;
         [SerializeField, Range(0, 1)] private float _time; 
+        [SerializeField] private float _duration = 2;
         
         private bool _isOpen;
         private Vector3 _startPosition;
+
+        public void Construct(IEnumerable<IForBlander> forBlenders)
+        {
+            foreach (var forBlender in forBlenders)
+            {
+                forBlender.OnStartFly += Open;
+            }
+        }
         
         public void Awake()
         {
             _startPosition = transform.position;
         }
-        
+
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
@@ -30,26 +42,20 @@ namespace _Project._Scripts
         
         private void Open()
         {
-            var position = _pointWhereMove.position;
-            var duration = GetDuration(position);
-            
-            DOTween.Sequence()
-                .Append(transform.DOMove(position, duration))
-                .Join(transform.DORotate(new Vector3(45f, 0f, 0f), duration));
+            var endPosition = _pointWhereMove.position;
+
+            var duration = transform.position.Duration(endPosition, _duration);
+            transform.DOMove(endPosition, duration).onComplete += Close;
         }
 
         private void Close()
         {
-            var duration = GetDuration(_startPosition);
+            var duration = transform.position.Duration(_startPosition, _duration);
+            
             DOTween.Sequence()
-                .Append(transform.DOMove(_startPosition, duration))
-                .Join(transform.DORotate(new Vector3(0f, 0f, 0f), duration));
+                .Append(transform.DOMove(_startPosition, duration));
         }
 
-        private float GetDuration(Vector3 position)
-        {
-            const float coefficient = 2f;
-            return Vector3.Distance(transform.position, position) * coefficient;
-        }
+        
     }
 }

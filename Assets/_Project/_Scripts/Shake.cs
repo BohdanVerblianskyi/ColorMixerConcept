@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,8 +11,16 @@ namespace _Project._Scripts
         
         private List<IProduct> _mixProducts = new List<IProduct>();
         
+        public Vector3 Position => transform.position;
+
+        private void Awake()
+        {
+            _renderer.enabled = false;
+        }
+
         public Color ToMix()
         {
+            _renderer.enabled = true;
             var result = MixColor(_mixProducts.Select(p => p.Color));
             _mixProducts.ForEach(p => p.TurnOff());
             _renderer.material.color = result;
