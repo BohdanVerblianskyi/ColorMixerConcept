@@ -2,5 +2,5 @@
 
 public interface IForBlander
 {
-    Action OnStartFly { get; set; }
+    Action OnStartJump { get; set; }
 }

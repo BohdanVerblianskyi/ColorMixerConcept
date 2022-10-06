@@ -6,9 +6,9 @@ namespace _Project._Scripts.Extension
     {
         public static Color ToNegative(this Color color)
         {
-            Color.RGBToHSV(color, out float H, out float S, out float V);
-            var negativeH = (H + 0.5f) % 1f;
-            return  Color.HSVToRGB(negativeH, S, V);
+            Color.RGBToHSV(color, out var h, out var s, V: out var v);
+            var negativeH = (h + 0.5f) % 1f;
+            return Color.HSVToRGB(negativeH, s, v);
         }
     }
 }

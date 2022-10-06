@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using _Project._Scripts.Extension;
 using DG.Tweening;
@@ -9,9 +9,9 @@ namespace _Project._Scripts
     public class Cover : MonoBehaviour
     {
         [SerializeField] private Transform _pointWhereMove;
-        [SerializeField, Range(0, 1)] private float _time; 
         [SerializeField] private float _duration = 2;
-        
+
+        private float _closeTime;
         private bool _isOpen;
         private Vector3 _startPosition;
 
@@ -19,43 +19,46 @@ namespace _Project._Scripts
         {
             foreach (var forBlender in forBlenders)
             {
-                forBlender.OnStartFly += Open;
+                forBlender.OnStartJump += Open;
             }
-        }
-        
-        public void Awake()
-        {
+
             _startPosition = transform.position;
         }
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                Open();
-            }
-            if (Input.GetMouseButtonDown(1))
+            if (_isOpen && _closeTime < Time.time)
             {
                 Close();
+                _isOpen = false;
             }
         }
-        
+
         private void Open()
         {
+            const float waitClose = 1f;
+            
+            _closeTime = Time.time + waitClose;
+
+            if (_isOpen)
+            {
+                return;
+            }
+            else
+            {
+                _isOpen = true;
+            }
+                
             var endPosition = _pointWhereMove.position;
 
             var duration = transform.position.Duration(endPosition, _duration);
-            transform.DOMove(endPosition, duration).onComplete += Close;
+            transform.DOMove(endPosition, duration);
         }
-
+        
         private void Close()
         {
             var duration = transform.position.Duration(_startPosition, _duration);
-            
-            DOTween.Sequence()
-                .Append(transform.DOMove(_startPosition, duration));
+            transform.DOMove(_startPosition, duration);
         }
-
-        
     }
 }

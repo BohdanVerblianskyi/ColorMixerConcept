@@ -1,21 +1,24 @@
 using System;
-using _Project._Scripts.Extension;
 using DG.Tweening;
 using UnityEngine;
-
 
 namespace _Project._Scripts
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Product : MonoBehaviour, IProduct,IForBlander
+    public class Product : MonoBehaviour, IProduct, IForBlander
     {
-        private const float DurationCoefficient = 2f;
-        
         [SerializeField] private Material _maiaMaterial;
-        [SerializeField] private Blander _blander;
 
-        private Rigidbody _rigidbody;
+        public Action OnStartJump { get; set; }
         
+        private Rigidbody _rigidbody;
+        private Vector3 _fallPosition;
+
+        public void Construct(Vector3 fallPosition)
+        {
+            _fallPosition = fallPosition;
+        }
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -26,10 +29,9 @@ namespace _Project._Scripts
 
         private void JumpToBlander()
         {
-            OnStartFly.Invoke();
+            OnStartJump?.Invoke();
             _rigidbody.isKinematic = false;
-            var duration = transform.position.Duration(_blander.Position, DurationCoefficient);
-            transform.DOJump(_blander.Position, 1, 1, 1);
+            transform.DOJump(_fallPosition, 1, 1, 1);
         }
 
         private void OnMouseDown()
@@ -42,8 +44,6 @@ namespace _Project._Scripts
             gameObject.SetActive(false);
         }
 
-        public Action OnStartFly { get; set; }
+      
     }
-
-    
 }

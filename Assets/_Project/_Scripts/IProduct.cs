@@ -4,7 +4,7 @@ namespace _Project._Scripts
 {
     public interface IProduct
     {
-        Color Color { get;}
+        Color Color { get; }
         void TurnOff();
     }
 }

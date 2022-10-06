@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,12 +7,12 @@ namespace _Project._Scripts
     public class Shake : MonoBehaviour
     {
         [SerializeField] private Renderer _renderer;
-        
+
         private List<IProduct> _mixProducts = new List<IProduct>();
-        
+
         public Vector3 Position => transform.position;
 
-        private void Awake()
+        public void Construct()
         {
             _renderer.enabled = false;
         }
@@ -26,7 +25,7 @@ namespace _Project._Scripts
             _renderer.material.color = result;
             return result;
         }
-        
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.TryGetComponent(out IProduct product))

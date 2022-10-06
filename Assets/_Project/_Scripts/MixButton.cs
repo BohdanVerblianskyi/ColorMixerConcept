@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace _Project._Scripts
 {
-    public class MixButton : MonoBehaviour,IButton
+    public class MixButton : MonoBehaviour, IButton
     {
         [SerializeField] private Transform _clickPoint;
-    
-        public Action OnClick { get; set;}
-    
+
+        public Action OnClick { get; set; }
+
         private bool _isClick;
         private Vector3 _startPosition;
         private Vector3 _clickPosition;
@@ -22,6 +22,11 @@ namespace _Project._Scripts
 
         private void OnMouseDown()
         {
+            if (_isClick)
+                return;
+
+            _isClick = true;
+
             const float duration = 0.4f;
             Debug.Log(1);
             transform.DOMove(_clickPosition, duration).onComplete += OnCompleteClick;
@@ -31,7 +36,7 @@ namespace _Project._Scripts
         {
             const float duration = 0.4f;
             OnClick?.Invoke();
-            transform.DOMove(_startPosition, duration);
+            transform.DOMove(_startPosition, duration).onComplete += () => _isClick = false;
         }
     }
 }
