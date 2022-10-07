@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using _Project._Scripts.Extension;
 using TMPro;
 using UnityEngine;
@@ -30,12 +31,21 @@ namespace _Project._Scripts
             blender.OnEndMix += Show;
         }
 
-        private void Show(Color actual)
+        private async void Show(Color actual)
         {
+            await Task.Delay(1000);
             _panel.SetActive(true);
             _actual.color = actual;
             _wishful.color = _wishfulColor;
-            _text.text = actual.CompareColors(_wishfulColor).ToString(CultureInfo.InvariantCulture);
+            var percentageOfStairs = actual.PercentageOfStairs(_wishfulColor);
+
+            const int minPercentageOfStairs = 90;
+            if (percentageOfStairs < minPercentageOfStairs)
+            {
+                _buttonNext.gameObject.SetActive(false);
+            }
+            
+            _text.text = percentageOfStairs.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

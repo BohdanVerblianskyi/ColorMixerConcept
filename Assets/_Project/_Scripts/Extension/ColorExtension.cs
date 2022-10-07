@@ -5,7 +5,7 @@ namespace _Project._Scripts.Extension
 {
     public static class ColorExtension
     {
-        public static int CompareColors(this Color a, Color b)
+        public static int PercentageOfStairs(this Color a, Color b)
         {
             var red = Mathf.Abs(a.r - b.r);
             var green = Mathf.Abs(a.g - b.g);
