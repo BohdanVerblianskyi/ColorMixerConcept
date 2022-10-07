@@ -1,14 +1,28 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace _Project._Scripts.Extension
 {
     public static class ColorExtension
     {
-        public static Color ToNegative(this Color color)
+        public static int CompareColors(this Color a, Color b)
         {
-            Color.RGBToHSV(color, out var h, out var s, V: out var v);
-            var negativeH = (h + 0.5f) % 1f;
-            return Color.HSVToRGB(negativeH, s, v);
+            var red = Mathf.Abs(a.r - b.r);
+            var green = Mathf.Abs(a.g - b.g);
+            var blue = Mathf.Abs(a.b - b.b);
+
+            var deltaColor = 0f;
+            deltaColor += DeltaColor(red, green);
+            deltaColor += DeltaColor(green, blue);
+            deltaColor += DeltaColor(blue, red);
+            deltaColor /= 3f;
+
+            return (int)Math.Round(((1f - deltaColor) * 100f));
+        }
+
+        private static float DeltaColor(float a, float b)
+        {
+            return Mathf.Sqrt(a * a + b * b);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using _Project._Scripts.Extension;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,22 +35,7 @@ namespace _Project._Scripts
             _panel.SetActive(true);
             _actual.color = actual;
             _wishful.color = _wishfulColor;
-            _text.text = CompareColors(actual, _wishfulColor).ToString(CultureInfo.InvariantCulture);
-        }
-
-        private int CompareColors(Color colorA, Color colorB)
-        {
-            var red = Mathf.Abs(colorA.r - colorB.r);
-            var green = Mathf.Abs(colorA.g - colorB.g);
-            var blue = Mathf.Abs(colorA.b - colorB.b);
-
-            var deltaColor = 0f;
-            deltaColor += Mathf.Sqrt(red * red + green * green);
-            deltaColor += Mathf.Sqrt(green * green + blue * blue);
-            deltaColor += Mathf.Sqrt(blue * blue + red * red);
-            deltaColor /= 3f;
-
-            return (int)Math.Round(((1f - deltaColor) * 100f));
+            _text.text = actual.CompareColors(_wishfulColor).ToString(CultureInfo.InvariantCulture);
         }
     }
 }

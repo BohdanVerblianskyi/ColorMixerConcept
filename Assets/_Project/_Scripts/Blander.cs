@@ -10,6 +10,9 @@ namespace _Project._Scripts
         [SerializeField] private Shake _shake;
         [SerializeField] private Cover _cover;
 
+        public Action<Color> OnEndMix { get; set; }
+        public Vector3 Position => _shake.Position;
+
         public void Construct(IEnumerable<IForBlander> forBlenders, IButton button)
         {
             _cover.Construct(forBlenders);
@@ -17,19 +20,18 @@ namespace _Project._Scripts
             _shake.Construct();
         }
 
-        public Action<Color> OnEndMix { get; set; }
-
-        public Vector3 Position => _shake.Position;
-
         private void Play()
         {
-            transform.DOShakeRotation(2f, 2f).onComplete += OnCompleteMix;
+            const float duration = 2f;
+            transform.DOShakeRotation(duration, 2f).onComplete += OnCompleteShake;
         }
 
-        private void OnCompleteMix()
+        private void OnCompleteShake()
         {
-            var color = _shake.ToMix();
-            OnEndMix?.Invoke(color);
+            if (_shake.TryMix(out var color))
+            {
+                OnEndMix?.Invoke(color);
+            }
         }
     }
 }

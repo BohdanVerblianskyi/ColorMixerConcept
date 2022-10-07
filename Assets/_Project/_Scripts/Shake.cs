@@ -17,13 +17,19 @@ namespace _Project._Scripts
             _renderer.enabled = false;
         }
 
-        public Color ToMix()
+        public bool TryMix(out Color result)
         {
+            if (_mixProducts.Count == 0)
+            {
+                result = default;
+                return false;
+            }
+            
             _renderer.enabled = true;
-            var result = MixColor(_mixProducts.Select(p => p.Color));
+             result = MixColor(_mixProducts.Select(p => p.Color));
             _mixProducts.ForEach(p => p.TurnOff());
             _renderer.material.color = result;
-            return result;
+            return true;
         }
 
         private void OnTriggerEnter(Collider other)

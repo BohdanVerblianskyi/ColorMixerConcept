@@ -44,11 +44,9 @@ namespace _Project._Scripts
             {
                 return;
             }
-            else
-            {
-                _isOpen = true;
-            }
-                
+
+            _isOpen = true;
+
             var endPosition = _pointWhereMove.position;
 
             var duration = transform.position.Duration(endPosition, _duration);
