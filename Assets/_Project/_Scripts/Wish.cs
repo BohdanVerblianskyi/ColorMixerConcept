@@ -16,7 +16,9 @@ namespace _Project._Scripts
             _level++;
 
             if (_wishfulColors.Count <= _level)
+            {
                 _level = 0;
+            }
         }
     }
 }

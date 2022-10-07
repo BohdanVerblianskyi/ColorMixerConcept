@@ -1,6 +1,9 @@
 ﻿using System;
 
-public interface IForBlander
+namespace _Project._Scripts
 {
-    Action OnStartJump { get; set; }
+    public interface IForBlander
+    {
+        Action OnStartJump { get; set; }
+    }
 }

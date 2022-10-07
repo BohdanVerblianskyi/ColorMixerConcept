@@ -23,12 +23,13 @@ namespace _Project._Scripts
         private void OnMouseDown()
         {
             if (_isClick)
+            {
                 return;
+            }
 
             _isClick = true;
 
             const float duration = 0.4f;
-            Debug.Log(1);
             transform.DOMove(_clickPosition, duration).onComplete += OnCompleteClick;
         }
 

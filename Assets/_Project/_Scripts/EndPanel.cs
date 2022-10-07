@@ -37,19 +37,24 @@ namespace _Project._Scripts
             _text.text = CompareColors(actual, _wishfulColor).ToString(CultureInfo.InvariantCulture);
         }
 
-        private int CompareColors(Color colorA, Color colorB)
+        private int CompareColors(Color a, Color b)
         {
-            var red = Mathf.Abs(colorA.r - colorB.r);
-            var green = Mathf.Abs(colorA.g - colorB.g);
-            var blue = Mathf.Abs(colorA.b - colorB.b);
+            var red = Mathf.Abs(a.r - b.r);
+            var green = Mathf.Abs(a.g - b.g);
+            var blue = Mathf.Abs(a.b - b.b);
 
             var deltaColor = 0f;
-            deltaColor += Mathf.Sqrt(red * red + green * green);
-            deltaColor += Mathf.Sqrt(green * green + blue * blue);
-            deltaColor += Mathf.Sqrt(blue * blue + red * red);
+            deltaColor += DeltaColor(red, green);
+            deltaColor += DeltaColor(green, blue);
+            deltaColor += DeltaColor(blue, red);
             deltaColor /= 3f;
 
             return (int)Math.Round(((1f - deltaColor) * 100f));
+        }
+
+        private static float DeltaColor(float a, float b)
+        {
+            return Mathf.Sqrt(a * a + b * b);
         }
     }
 }
